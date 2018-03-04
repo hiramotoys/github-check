@@ -10,4 +10,6 @@ func main() {
 	fmt.Println("aaaaaa")
 	b := tag.IsBranchHeadTagged("master")
 	fmt.Println(b)
+	client := clt.GetClt()
+	fmt.Println(client)
 }
