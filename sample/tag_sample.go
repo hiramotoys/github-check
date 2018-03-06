@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"github.com/hiramotoys/github-check/tag"
+	"github.com/hiramotoys/github-check/repository"
 )
 
 func main() {
-	b := tag.IsBranchHeadTagged("master")
-	fmt.Println(b)
+	b := new(repository.Branch)
+	b.IsHeadTagged()
 }
