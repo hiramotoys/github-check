@@ -15,3 +15,11 @@ func TestGithubClient(t *testing.T) {
 		t.Log("GitURL: ", *repo.GitURL)
 	}
 }
+
+func TestTaskLoad(t *testing.T) {
+	tsk := Task{}
+	result := tsk.Load()
+	if result != 0 {
+		t.Error("Return value is invalid.")
+	}
+}
