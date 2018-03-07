@@ -20,3 +20,27 @@ func newGithubClient() *githubClient {
 func GetGithubClient() *githubClient {
 	return githubClientInstance
 }
+
+//Task definition
+type Task struct {
+}
+
+func (t Task) LoadTasks() int {
+	return 0
+}
+
+func (t Task) RunTasks() int {
+	return 0
+}
+
+func (t Task) PushResult() int {
+	return 0
+}
+
+//TaskRunner definition
+type TaskRunner struct {
+}
+
+func (taskRunner TaskRunner) execute() int {
+	return 0
+}
