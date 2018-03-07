@@ -25,15 +25,15 @@ func GetGithubClient() *githubClient {
 type Task struct {
 }
 
-func (t Task) LoadTasks() int {
+func (t *Task) Load() int {
 	return 0
 }
 
-func (t Task) RunTasks() int {
+func (t *Task) Run() int {
 	return 0
 }
 
-func (t Task) PushResult() int {
+func (t *Task) PushResult() int {
 	return 0
 }
 
@@ -41,6 +41,6 @@ func (t Task) PushResult() int {
 type TaskRunner struct {
 }
 
-func (taskRunner TaskRunner) execute() int {
+func (taskRunner *TaskRunner) execute() int {
 	return 0
 }
