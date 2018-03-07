@@ -16,6 +16,14 @@ func TestGithubClient(t *testing.T) {
 	}
 }
 
+func TestGetRepository(t *testing.T) {
+	repo := GetRepository("hiramotoys", "cookbook-sample")
+	if *repo.GitURL != "git://github.com/hiramotoys/cookbook-sample.git" {
+		t.Error("Failed GitURL is not equql.")
+		t.Log("GitURL: ", *repo.GitURL)
+	}
+}
+
 func TestTaskLoad(t *testing.T) {
 	tsk := Task{}
 	result := tsk.Load()

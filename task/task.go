@@ -1,6 +1,7 @@
 package task
 
 import (
+	"context"
 	"github.com/google/go-github/github"
 )
 
@@ -21,8 +22,19 @@ func GetGithubClient() *githubClient {
 	return githubClientInstance
 }
 
+//Github utility.
+func GetRepository(owner string, repoName string) *github.Repository {
+	client := GetGithubClient()
+	repo, _, err := client.Github.Repositories.Get(context.Background(), owner, repoName)
+	if err != nil {
+		return nil
+	}
+	return repo
+}
+
 //Task definition
 type Task struct {
+	isDryRun *bool
 }
 
 func (t *Task) Load() int {
@@ -31,6 +43,10 @@ func (t *Task) Load() int {
 
 func (t *Task) Run() int {
 	return 0
+}
+
+func (t *Task) runTagChecker(owner string, repoName string) {
+	GetRepository(owner, repoName)
 }
 
 func (t *Task) PushResult() int {
