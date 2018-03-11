@@ -2,7 +2,10 @@ package task
 
 import (
 	"context"
+	"fmt"
 	"github.com/google/go-github/github"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 //Github Client
@@ -32,13 +35,32 @@ func GetRepository(owner string, repoName string) *github.Repository {
 	return repo
 }
 
-//Task definition
-type Task struct {
-	isDryRun *bool
+type Repository struct {
+	Owner  string `yaml: "owner"`
+	Name   string `yaml: "name"`
+	Branch string `yaml: "branch"`
 }
 
-func (t *Task) Load() int {
-	return 0
+//Task definition
+type Task struct {
+	Repositories []Repository `yaml: "repository"`
+}
+
+func LoadTask(filename string) *Task {
+	fmt.Println(filename)
+	buf, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("buf: %+v\n", string(buf))
+	var t Task
+	err = yaml.Unmarshal(buf, &t)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("t: %+v", t)
+	fmt.Println("return")
+	return &t
 }
 
 func (t *Task) Run() int {

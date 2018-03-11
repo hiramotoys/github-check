@@ -22,9 +22,19 @@ func TestGetRepository(t *testing.T) {
 	}
 }
 
-func TestTaskLoad(t *testing.T) {
+func TestLoadTask(t *testing.T) {
+	//tsk := LoadTask("test.yaml")
+	//t.Log(tsk)
+	//fmt.Printf("%T", tsk.Repositories[0])
+	result := 0
+	if result != 0 {
+		t.Error("Return value is invalid.")
+	}
+}
+
+func TestTaskRun(t *testing.T) {
 	tsk := Task{}
-	result := tsk.Load()
+	result := tsk.Run()
 	if result != 0 {
 		t.Error("Return value is invalid.")
 	}
