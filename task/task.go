@@ -2,6 +2,7 @@ package task
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/google/go-github/github"
 	"gopkg.in/yaml.v2"
@@ -33,6 +34,26 @@ func GetRepository(owner string, repoName string) *github.Repository {
 		return nil
 	}
 	return repo
+}
+
+func BranchHeadIsTagged(owner string, repoName string, branchName string) (bool, error) {
+	client := GetGithubClient()
+	branch, _, err := client.Github.Repositories.GetBranch(context.Background(), owner, repoName, branchName)
+	if err != nil {
+		return false, errors.New("Get branch error.")
+	}
+	tags, _, err := client.Github.Repositories.ListTags(context.Background(), owner, repoName, nil)
+	if err != nil {
+		return false, errors.New("Get tags error.")
+	}
+	for _, tag := range tags {
+		fmt.Println(*branch.Commit.SHA)
+		fmt.Println(*tag.Commit.SHA)
+		if *branch.Commit.SHA == *tag.Commit.SHA {
+			return true, nil
+		}
+	}
+	return false, nil
 }
 
 type Repository struct {
