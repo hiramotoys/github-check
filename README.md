@@ -1,4 +1,5 @@
 # github-check
+[![Build Status](https://travis-ci.org/hiramotoys/github-check.svg?branch=master)](https://travis-ci.org/hiramotoys/github-check)
 
 ## Set up local
 
