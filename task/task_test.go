@@ -39,3 +39,13 @@ func TestTaskRun(t *testing.T) {
 		t.Error("Return value is invalid.")
 	}
 }
+
+func TestBranchHeadIsTagged(t *testing.T) {
+	b, e := BranchHeadIsTagged("hiramotoys", "cookbook-sample", "master")
+	if e != nil {
+		t.Errorf("%s\n", e)
+	}
+	if !b {
+		t.Error("Failed: the branch is tagged.")
+	}
+}
