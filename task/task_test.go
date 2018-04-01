@@ -23,9 +23,16 @@ func TestGetRepository(t *testing.T) {
 }
 
 func TestLoadTask(t *testing.T) {
-	result := 0
-	if result != 0 {
-		t.Error("Return value is invalid.")
+	tsk := LoadTask("test.yaml")
+	repo1 := tsk.Repositories[0]
+	if repo1.Name != "cookbook-sample" {
+		t.Error("Failed can't load repository name correctly.")
+	}
+	if repo1.Branch != "master" {
+		t.Error("Failed can't load repository branch correctly.")
+	}
+	if repo1.Owner != "hiramotoys" {
+		t.Error("Failed can't load repository owner correctly.")
 	}
 }
 
