@@ -2,12 +2,11 @@ language: go
 
 go:
   - 1.10
-before_install:
-  - go get github.com/golang/dep/...
+install:
+  - go get -u github.com/golang/dep/...
+  - dep ensure
   - go get github.com/mattn/goveralls
   - go get golang.org/x/tools/cmd/cover
-install:
-  - $GOPATH/bin/dep ensure
 script:
   - go test
 branches:
