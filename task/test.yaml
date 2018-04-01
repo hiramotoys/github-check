@@ -3,7 +3,9 @@ repositories:
     owner: hiramotoys
     name: cookbook-sample
     branch: master
+    check: tag
   -
     owner: hiramotoys
     name: cookbook-sample
-    branch: master
+    branch: develop
+    check: tag

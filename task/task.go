@@ -57,39 +57,66 @@ func BranchHeadIsTagged(owner string, repoName string, branchName string) (bool,
 }
 
 type Repository struct {
-	Owner  string `yaml: "owner"`
-	Name   string `yaml: "name"`
-	Branch string `yaml: "branch"`
+	Owner         string `yaml: "owner"`
+	Name          string `yaml: "name"`
+	Branch        string `yaml: "branch"`
+	Check         string `yaml: "check"`
+	ResultStatus  int
+	ResultMessage string
 }
+
+const RepositoryCheckModeTag = "tag"
+
+const ResultStatusCodeOk = 0
+const ResultStatusCodeNg = 1
+const ResultStatusCodeErr = 2
 
 //Task definition
 type Task struct {
 	Repositories []Repository `yaml: "repository"`
 }
 
-func LoadTask(filename string) *Task {
+func LoadTask(filename string) (*Task, error) {
 	fmt.Println(filename)
 	buf, err := ioutil.ReadFile(filename)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	fmt.Printf("buf: %+v\n", string(buf))
 	var t Task
 	err = yaml.Unmarshal(buf, &t)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	fmt.Printf("t: %+v", t)
-	fmt.Println("return")
-	return &t
+	return &t, nil
 }
 
 func (t *Task) Run() int {
 	return 0
 }
 
-func (t *Task) runTagChecker(owner string, repoName string) {
-	GetRepository(owner, repoName)
+func (t *Task) runRepositoryChecker() {
+	for _, repository := range t.Repositories {
+		if repository.Check == RepositoryCheckModeTag {
+			repository.tagCheck()
+		}
+	}
+}
+
+func (r *Repository) tagCheck() {
+	ok, err := BranchHeadIsTagged(r.Owner, r.Name, r.Branch)
+	if err != nil {
+		r.ResultStatus = ResultStatusCodeErr
+		r.ResultMessage = "Repository error."
+		return
+	}
+	if ok {
+		r.ResultStatus = ResultStatusCodeOk
+		r.ResultMessage = "Branch head is tagged."
+	} else {
+		r.ResultStatus = ResultStatusCodeNg
+		r.ResultMessage = "Branch head is not tagged."
+	}
 }
 
 func (t *Task) PushResult() int {
@@ -100,6 +127,12 @@ func (t *Task) PushResult() int {
 type TaskRunner struct {
 }
 
-func (taskRunner *TaskRunner) execute() int {
+func (taskRunner *TaskRunner) execute(filename string) int {
+	tsk, err := LoadTask(filename)
+	if err != nil {
+		panic(err)
+	}
+	tsk.runRepositoryChecker()
 	return 0
+
 }
